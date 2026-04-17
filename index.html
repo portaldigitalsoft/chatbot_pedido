@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soberano Builder V13 | Chatbot Pedidos Pro</title>
+    <title>Soberano Builder V13 | Pedidos con Delivery</title>
     <style>
         :root { --gold: #D4AF37; --dark-bg: #0a0a0a; --glass: rgba(255, 255, 255, 0.05); }
         * { box-sizing: border-box; }
@@ -21,77 +21,88 @@
 <body>
 
     <div class="builder-container">
-        <h1>🛒 BUILDER V13 | CHATBOT PEDIDOS (FLOAT)</h1>
+        <h1>🛒 BUILDER V13 | CHATBOT PEDIDOS + DELIVERY</h1>
         
         <div class="section">
             <label>Nombre del Comercio:</label>
-            <input type="text" id="nombre_comercio" placeholder="Ej: Pizzería Roma">
+            <input type="text" id="nombre_comercio" placeholder="Ej: El Jalapeño">
             <label>WhatsApp Pedidos (Sin el +):</label>
             <input type="text" id="ws_num" placeholder="5493764362698">
         </div>
 
-        <button class="btn-generar" onclick="fabricarCodigoPedidos()">Generar Bot de Pedidos 🚀</button>
+        <button class="btn-generar" onclick="fabricarCodigoDelivery()">Generar Bot de Pedidos Completo 🚀</button>
         <textarea id="codigo_salida" readonly></textarea>
     </div>
 
 <script>
-    function fabricarCodigoPedidos() {
-        const nombre = document.getElementById('nombre_comercio').value || "COMERCIO";
+    function fabricarCodigoDelivery() {
+        const nombre = document.getElementById('nombre_comercio').value || "EL COMERCIO";
         const ws = document.getElementById('ws_num').value;
         const avatar = "https://i.ibb.co/pjL8062t/ei-1776373504277-removebg-preview.png";
 
         if(!ws) return alert("Falta el WhatsApp de destino.");
 
-        const scriptCodigo = `<div id="sob_pedidos">
+        const scriptCodigo = `<div id="sob_p_del">
     <style>
-        #sob_pedidos * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        #sob_pedidos #pedidos-launcher { position: fixed; bottom: 20px; right: 20px; width: 65px; height: 65px; background: #000; border: 2px solid #D4AF37; border-radius: 50%; cursor: pointer; z-index: 9999; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 25px rgba(0,0,0,0.6); transition: 0.3s; }
-        #sob_pedidos #pedidos-launcher:hover { transform: scale(1.1); }
-        #sob_pedidos #pedidos-launcher img { width: 70%; height: 70%; object-fit: contain; }
-        #sob_pedidos .win-p { display: none; position: fixed; bottom: 95px; right: 20px; width: 360px; max-width: calc(100% - 40px); border: 2px solid #D4AF37; padding: 20px; border-radius: 25px; background: #000; color: white; box-shadow: 0 10px 50px #000; z-index: 9998; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
-        #sob_pedidos .chat-h { display:flex; align-items:center; gap:12px; margin-bottom:15px; border-bottom:1px solid #222; padding-bottom:10px; position: relative; }
-        #sob_pedidos .bot-img-h { width:45px; height:45px; border-radius:50%; border:1px solid #D4AF37; }
-        #sob_pedidos .close-p { position: absolute; right: 0; top: 0; cursor: pointer; color: #D4AF37; font-size: 1.5rem; }
-        #sob_pedidos .box-p { height:280px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; scroll-behavior: smooth; }
-        #sob_pedidos .msg-p { background:rgba(212,175,55,0.1); padding:12px; border-radius:15px; border-left:3px solid #D4AF37; margin-bottom:10px; font-size:0.9rem; }
-        #sob_pedidos .in-p { width:100%; padding:14px; border:1px solid #D4AF37; border-radius:12px; background:#000; color:white; margin-bottom:10px; outline:none; }
-        #sob_pedidos .btn-p { width:100%; padding:16px; background:#D4AF37; border:none; border-radius:12px; color:#000; font-weight:bold; cursor:pointer; text-transform:uppercase; }
-        #sob_pedidos .footer-p { text-align:center; font-size:0.55rem; color:#444; margin-top:10px; letter-spacing: 1px; }
+        #sob_p_del * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        #sob_p_del #p-launch { position: fixed; bottom: 20px; right: 20px; width: 65px; height: 65px; background: #000; border: 2px solid #D4AF37; border-radius: 50%; cursor: pointer; z-index: 9999; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 25px rgba(0,0,0,0.6); }
+        #sob_p_del #p-launch img { width: 70%; height: 70%; object-fit: contain; }
+        #sob_p_del .win-d { display: none; position: fixed; bottom: 95px; right: 20px; width: 360px; max-width: calc(100% - 40px); border: 2px solid #D4AF37; padding: 20px; border-radius: 25px; background: #000; color: white; box-shadow: 0 10px 50px #000; z-index: 9998; animation: upD 0.3s ease; }
+        @keyframes upD { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        #sob_p_del .h-d { display:flex; align-items:center; gap:12px; border-bottom:1px solid #222; padding-bottom:12px; position: relative; margin-bottom:15px; }
+        #sob_p_del .img-h { width:45px; height:45px; border-radius:50%; border:1px solid #D4AF37; }
+        #sob_p_del .cl-d { position: absolute; right: 0; top: 0; cursor: pointer; color: #D4AF37; font-size: 1.5rem; }
+        #sob_p_del .box-d { height:260px; overflow-y:auto; margin-bottom:15px; }
+        #sob_p_del .msg-d { background:rgba(212,175,55,0.08); padding:12px; border-radius:15px; border-left:3px solid #D4AF37; margin-bottom:12px; font-size:0.9rem; line-height:1.4; }
+        #sob_p_del .in-d { width:100%; padding:14px; border:1px solid #D4AF37; border-radius:12px; background:#000; color:white; margin-bottom:10px; outline:none; font-size:15px; }
+        #sob_p_del .btn-d { width:100%; padding:16px; background:#D4AF37; border:none; border-radius:12px; color:#000; font-weight:bold; cursor:pointer; text-transform:uppercase; transition: 0.3s; }
+        #sob_p_del .footer-d { text-align:center; font-size:0.55rem; color:#444; margin-top:10px; letter-spacing: 1px; text-transform: uppercase;}
     </style>
-    <div id="pedidos-launcher" onclick="togglePed()"><img src="${avatar}"></div>
-    <div class="win-p" id="win-ped">
-        <div class="chat-h">
-            <img src="${avatar}" class="bot-img-h">
+    <div id="p-launch" onclick="tk()"><img src="${avatar}"></div>
+    <div class="win-d" id="w-d">
+        <div class="h-d">
+            <img src="${avatar}" class="img-h">
             <div>
                 <div style="font-weight:bold; font-size:0.9rem;">Toma Pedidos</div>
                 <div style="font-size:0.6rem; color:#00ff41;">● Online para ${nombre}</div>
             </div>
-            <span class="close-p" onclick="togglePed()">×</span>
+            <span class="cl-d" onclick="tk()">×</span>
         </div>
-        <div id="box-ped" class="box-p"></div>
-        <div id="area-ped">
-            <input type="text" id="ped_name" class="in-p" placeholder="¿A nombre de quién el pedido?">
-            <button class="btn-p" onclick="paso1()">Siguiente</button>
+        <div id="b-d" class="box-d"></div>
+        <div id="a-d">
+            <input type="text" id="n_d" class="in-d" placeholder="¿Tu nombre?">
+            <button class="btn-d" onclick="p1()">Siguiente</button>
         </div>
-        <div class="footer-p">Portaldigitalsoft | Pedidos Inteligentes</div>
+        <div class="footer-d">Portaldigitalsoft | Pedidos Inteligentes</div>
     </div>
     <script>
-        let p_pas=1, p_cli={n:'', d:''};
-        const p_box=document.getElementById('box-ped'), p_win=document.getElementById('win-ped');
-        function togglePed(){ p_win.style.display=(p_win.style.display==='block')?'none':'block'; if(p_box.children.length===0) p_init(); }
-        function p_add(t){ const d=document.createElement('div'); d.className='msg-p'; d.innerHTML=t; p_box.appendChild(d); p_box.scrollTop=p_box.scrollHeight; }
-        function p_init(){ p_add("¡Hola! Soy el asistente de pedidos de <b>${nombre}</b>. ¿Cuál es tu nombre?"); }
-        function paso1(){
-            const i=document.getElementById('ped_name'); if(!i.value) return;
-            p_cli.n=i.value;
-            p_add("Perfecto <b>"+p_cli.n+"</b>. ¿Qué te gustaría pedir hoy? (Detalla cantidades)");
-            document.getElementById('area-ped').innerHTML='<textarea id="ped_det" class="in-p" style="height:80px;resize:none;" placeholder="Ej: 2 Pizzas Muzzarella..."></textarea><button class="btn-p" onclick="p_final()">Enviar Pedido</button>';
+        let st=1, cli={n:'', p:'', d:''};
+        const bx=document.getElementById('b-d'), wn=document.getElementById('w-d');
+        function tk(){ wn.style.display=(wn.style.display==='block')?'none':'block'; if(bx.children.length===0) ini(); }
+        function ad(t){ const d=document.createElement('div'); d.className='msg-d'; d.innerHTML=t; bx.appendChild(d); bx.scrollTop=bx.scrollHeight; }
+        function ini(){ ad("¡Hola! Soy el asistente de pedidos de <b>${nombre}</b>. ¿Cuál es tu nombre?"); }
+        
+        function p1(){
+            const v=document.getElementById('n_d').value; if(!v) return;
+            cli.n=v; ad("Perfecto <b>"+v+"</b>. ¿Qué te gustaría pedir hoy? (Detalla productos y cantidades)");
+            document.getElementById('a-d').innerHTML='<textarea id="p_d" class="in-d" style="height:70px;resize:none;" placeholder="Ej: 2 Hamburguesas completas..."></textarea><button class="btn-d" onclick="p2()">Siguiente</button>';
         }
-        function p_final(){
-            const t=document.getElementById('ped_det').value; if(!t) return;
-            let m = "🛒 *NUEVO PEDIDO - ${nombre}*\\n\\n*Cliente:* "+p_cli.n+"\\n*Detalle:* "+t+"\\n\\n🤖 *Pedido gestionado por IA*";
-            p_add("🚀 Procesando pedido...");
+
+        function p2(){
+            const v=document.getElementById('p_d').value; if(!v) return;
+            cli.p=v; ad("¡Entendido! Por último, ¿a qué <b>dirección</b> enviamos el pedido?");
+            document.getElementById('a-d').innerHTML='<input type="text" id="d_d" class="in-d" placeholder="Calle, número y barrio..."><button class="btn-d" onclick="fin()">Enviar Pedido</button>';
+        }
+
+        function fin(){
+            const v=document.getElementById('d_d').value; if(!v) return;
+            cli.d=v;
+            let m = "🛒 *NUEVO PEDIDO - ${nombre}*\\n\\n";
+            m += "Mi nombre es *"+cli.n+"*, quiero pedir *"+cli.p+"* y que me lo envíen a *"+cli.d+"*.\\n\\n";
+            m += "Quiero saber el total incluido el Costo del delivery, muchas gracias. 🙏\\n\\n";
+            m += "🤖 _Gestionado por Pedidos Inteligentes_";
+            
+            ad("🚀 <b>¡Listo!</b> Abriendo WhatsApp...");
             setTimeout(()=>window.open("https://wa.me/${ws}?text="+encodeURIComponent(m.replace(/\\\\n/g, '\\n'))), 1000);
         }
     <\/script>
@@ -105,4 +116,3 @@
 </script>
 </body>
 </html>
-
