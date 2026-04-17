@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soberano Builder V12 | Ticket Inteligente</title>
+    <style>
+        :root { --gold: #D4AF37; --dark-bg: #0a0a0a; --glass: rgba(255, 255, 255, 0.05); }
+        * { box-sizing: border-box; }
+        body { background: var(--dark-bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .builder-container { max-width: 850px; width: 100%; background: linear-gradient(145deg, #1a1a1a, #000); border: 2px solid var(--gold); border-radius: 20px; padding: 20px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+        h1 { color: var(--gold); text-align: center; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--gold); padding-bottom: 15px; font-size: 1.1rem; }
+        .section { margin-bottom: 20px; padding: 15px; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 15px; background: var(--glass); }
+        label { color: var(--gold); font-size: 0.75rem; font-weight: bold; display: block; margin-bottom: 5px; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--gold); background: #000; color: #fff; outline: none; margin-bottom: 12px; font-size: 14px; }
+        .btn-generar { background: transparent; color: var(--gold); border: 2px solid var(--gold); padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; transition: 0.4s; font-size: 0.9rem;}
+        .btn-generar:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
+        #codigo_salida { width: 100%; height: 250px; margin-top: 20px; background: #050505; color: #00ff41; font-family: monospace; border: 1px solid #444; padding: 10px; border-radius: 10px; display: none; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+    <div class="builder-container">
+        <h1>🛠️ SOBERANO BUILDER V12</h1>
+        
+        <div class="section">
+            <label>Nombre del Negocio:</label>
+            <input type="text" id="nombre_negocio" placeholder="Ej: Burger Soberana">
+            <label>WhatsApp (Sin el +):</label>
+            <input type="text" id="ws_num" placeholder="5493764362698">
+            <label>Tiempo estimado (minutos):</label>
+            <input type="text" id="tiempo_estimado" placeholder="Ej: 30-45">
+            <label>URL Imagen Avatar:</label>
+            <input type="text" id="url_avatar" placeholder="URL de la imagen del bot">
+        </div>
+
+        <button class="btn-generar" onclick="fabricarCodigo()">Generar Bot con Lógica de Retiro 🚀</button>
+        <textarea id="codigo_salida" readonly></textarea>
+    </div>
+
+<script>
+    function fabricarCodigo() {
+        const nombre = document.getElementById('nombre_negocio').value || "NEGOCIO";
+        const ws = document.getElementById('ws_num').value;
+        const tiempo = document.getElementById('tiempo_estimado').value || "45";
+        const avatar = document.getElementById('url_avatar').value || "https://cdn-icons-png.flaticon.com/512/4712/4712035.png";
+
+        if(!ws) return alert("Falta el número de WhatsApp.");
+
+        const scriptCodigo = `<div id="sob_mod" style="width:100%; box-sizing:border-box; padding:5px;">
+    <style>
+        #sob_mod * { box-sizing: border-box; font-family: sans-serif; }
+        #sob_mod .s-c { width:100%; max-width:450px; margin:0 auto; border:2px solid #D4AF37; padding:15px; border-radius:20px; background:#000; color:white; box-shadow:0 10px 40px #000; }
+        #sob_mod .chat-box { height:280px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; scroll-behavior: smooth; }
+        #sob_mod .msg { background:#111; padding:12px; border-radius:15px; border-left:3px solid #D4AF37; margin-bottom:10px; font-size:0.85rem; line-height:1.4; max-width:90%; }
+        #sob_mod .bot-h { display:flex; align-items:center; gap:10px; margin-bottom:10px; border-bottom:1px solid #222; padding-bottom:8px; }
+        #sob_mod .bot-img { width:35px; height:35px; border-radius:50%; border:1px solid #D4AF37; }
+        #sob_mod .s-i { width:100%; padding:14px; border:1px solid #D4AF37; border-radius:10px; background:#000; color:white; font-size:16px; margin-bottom:8px; }
+        #sob_mod .s-b { width:100%; padding:14px; background:#D4AF37; border:none; border-radius:10px; color:#000; font-weight:bold; cursor:pointer; text-transform:uppercase; }
+        #sob_mod .opt { background:#111; border:1px solid #D4AF37; color:#D4AF37; padding:12px; border-radius:10px; margin-bottom:8px; cursor:pointer; text-align:center; font-size:0.85rem; font-weight:bold; }
+    </style>
+    <div class="s-c">
+        <div class="bot-h"><img src="${avatar}" class="bot-img"><div><div style="font-weight:bold; font-size:0.8rem;">${nombre}</div><div style="font-size:0.6rem; color:#00ff41;">● En línea | Tiempo: ${tiempo}m</div></div></div>
+        <div id="box" class="chat-box"></div>
+        <div id="iarea">
+            <input type="text" id="in" class="s-i" placeholder="Escribe aquí...">
+            <button class="s-b" style="width:100%" onclick="p()">Enviar</button>
+        </div>
+    </div>
+    <script>
+        let pas=1, pedido={n:'', d:'', t:'', e:''};
+        const b=document.getElementById('box'), i=document.getElementById('in'), ia=document.getElementById('iarea'), hoy=new Date().toISOString().split('T')[0];
+
+        function add(t){ const d=document.createElement('div'); d.className='msg'; d.innerHTML=t; b.appendChild(d); b.scrollTop=b.scrollHeight; }
+
+        if(localStorage.getItem('last_order') === hoy) {
+            add("¡Hola! Ya tenemos un pedido tuyo en proceso hoy. Escríbenos por WhatsApp si necesitas algo más.");
+            ia.style.display='none';
+        } else {
+            add("¡Hola! Soy el asistente de <b>${nombre}</b>. ¿Cuál es tu nombre?");
+        }
+
+        function p(){
+            let v=document.getElementById('in').value; if(!v) return;
+            if(pas==1){ pedido.n=v; add("Hola <b>"+v+"</b>, ¿Qué quieres pedir hoy?"); pas=2; document.getElementById('in').value=''; }
+            else if(pas==2){ 
+                pedido.d=v; add("¿Cómo prefieres la entrega?"); 
+                ia.innerHTML = '<div class="opt" onclick="setE(1)">🚀 Envío a domicilio</div><div class="opt" onclick="setE(2)">🥡 Retiro en local</div>';
+            }
+        }
+
+        function setE(m){
+            if(m==1){
+                pedido.e = "Envío";
+                add("Perfecto, dime tu **dirección**:");
+                ia.innerHTML = '<input type="text" id="in_dir" class="s-i" placeholder="Calle y Nro..."><button class="s-b" style="width:100%" onclick="pDir()">Finalizar</button>';
+            } else {
+                pedido.e = "Retiro";
+                pedido.t = "Retiro en local";
+                enviarWA();
+            }
+        }
+
+        function pDir(){
+            const dir = document.getElementById('in_dir').value;
+            if(!dir) return;
+            pedido.t = "Envío a domicilio (" + dir + ")";
+            enviarWA();
+        }
+
+        function enviarWA(){
+            const hora = new Date(); hora.setMinutes(hora.getMinutes() + parseInt("${tiempo.split('-')[0]}"));
+            const hEst = (hora.getHours()<10?'0':'')+hora.getHours() + ":" + (hora.getMinutes()<10?'0':'') + hora.getMinutes();
+            
+            let ticket = "📌 *NUEVO PEDIDO - ${nombre}*\\n\\n";
+            ticket += "*Cliente:* " + pedido.n + "\\n";
+            ticket += "*Pedido:* " + pedido.d + "\\n";
+            ticket += "*Entrega:* " + pedido.t + "\\n";
+            
+            if(pedido.e === "Envío") {
+                ticket += "*Informar costo de envío.*\\n";
+            } else {
+                ticket += "*Me pasa la ubicación por favor?*\\n";
+            }
+            
+            ticket += "*Hora estimada:* " + hEst + " hs";
+            
+            localStorage.setItem('last_order', hoy);
+            add("🚀 ¡Ticket listo! Abriendo WhatsApp...");
+            setTimeout(()=> window.open("https://wa.me/${ws}?text="+encodeURIComponent(ticket.replace(/\\\\n/g, '\\n'))), 1000);
+        }
+    <\/script>
+</div>`;
+        
+        const out = document.getElementById('codigo_salida');
+        out.value = scriptCodigo;
+        out.style.display = 'block';
+        out.select();
+    }
+</script>
+</body>
+          </html>
+
